@@ -1,0 +1,2 @@
+program var x,y : int ;  begin x := y := 1 ; write (x); write (y) end @ 
+
