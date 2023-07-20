@@ -65,8 +65,7 @@ public class GraphicsService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String resultFile = System.getProperty("java.io.tmpdir") + "\\spincubevideo.mp4";
-        resultFile = "src/main/resources/static/spincubevideo.mp4";
+        String resultFile = System.getProperty("java.io.tmpdir") + File.separator + "spincubevideo.mp4";
         Path resultPath = Paths.get(resultFile);
         Path srcPath = Paths.get("spincube.mp4");
         System.out.println("srcPath " + srcPath);
@@ -81,7 +80,7 @@ public class GraphicsService {
     BufferedImage drawImage (int pivotx, int pivoty, int pivotz, int angularVelocity) {
 
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        System.out.println("new BufferedImage width = " + width + "height = " + height);
+        //System.out.println("new BufferedImage width = " + width + "height = " + height);
 
         double[] zBuffer = new double[img.getWidth() * img.getHeight()];
         // initialize array with extremely far away depths
@@ -99,10 +98,10 @@ public class GraphicsService {
             Vertex v2 = currentTransform.transform(t.v2);
             Vertex v3 = currentTransform.transform(t.v3);
 
-            System.out.println("---------------------------");
-            System.out.println("v1 v2 v3 x" + v1.x + " " + v2.x + " " + v3.x);
-            System.out.println("v1 v2 v3 y" + v1.y + " " + v2.y + " " + v3.y);
-            System.out.println("v1 v2 v3 z" + v1.z + " " + v2.z + " " + v3.z);
+//            System.out.println("---------------------------");
+//            System.out.println("v1 v2 v3 x" + v1.x + " " + v2.x + " " + v3.x);
+//            System.out.println("v1 v2 v3 y" + v1.y + " " + v2.y + " " + v3.y);
+//            System.out.println("v1 v2 v3 z" + v1.z + " " + v2.z + " " + v3.z);
 
             Vertex ab = new Vertex(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z, v2.w - v1.w);
             Vertex ac = new Vertex(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z, v3.w - v1.w);
@@ -133,10 +132,10 @@ public class GraphicsService {
             v3.x += viewportWidth / 2;
             v3.y += viewportHeight / 2;
 
-            System.out.println("");
-            System.out.println("v1 v2 v3 x" + v1.x + " " + v2.x + " " + v3.x);
-            System.out.println("v1 v2 v3 y" + v1.y + " " + v2.y + " " + v3.y);
-            System.out.println("v1 v2 v3 z" + v1.z + " " + v2.z + " " + v3.z);
+//            System.out.println("");
+//            System.out.println("v1 v2 v3 x" + v1.x + " " + v2.x + " " + v3.x);
+//            System.out.println("v1 v2 v3 y" + v1.y + " " + v2.y + " " + v3.y);
+//            System.out.println("v1 v2 v3 z" + v1.z + " " + v2.z + " " + v3.z);
 
 
             int minX = (int) Math.max(0, Math.ceil(Math.min(v1.x, Math.min(v2.x, v3.x))));
@@ -146,7 +145,7 @@ public class GraphicsService {
 
             double triangleArea = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x);
 
-            System.out.println("minY = " + minY + " maxY = " + maxY + "minX = " + minX + " maxX = " + maxX);
+            //System.out.println("minY = " + minY + " maxY = " + maxY + "minX = " + minX + " maxX = " + maxX);
 
             for (int y = minY; y <= maxY; y++) {
                 for (int x = minX; x <= maxX; x++) {
