@@ -1,25 +1,24 @@
 package com.example.bootIML.interpretator;
 
 public class Lex {
-    TypeOfLex t_lex;
-    int           v_lex;
-    public
+    TypeOfLex typeOfLex;
+    int valueOfLex;
     Lex () {
-    	t_lex = TypeOfLex.LEX_NULL;
-    	v_lex = 0;
+    	typeOfLex = TypeOfLex.LEX_NULL;
+    	valueOfLex = 0;
     }
-    Lex(TypeOfLex t) {
-    	t_lex = t;
-    	v_lex = 0;
+    Lex(TypeOfLex typeOfLex) {
+    	this.typeOfLex = typeOfLex;
+    	this.valueOfLex = 0;
     }   
-    Lex(TypeOfLex t, int v) {
-    	t_lex = t;
-    	v_lex = v;
+    Lex(TypeOfLex typeOfLex, int valueOfLex) {
+    	this.typeOfLex = typeOfLex;
+    	this.valueOfLex = valueOfLex;
     }      
-    TypeOfLex get_type() {
-        return t_lex;
+    TypeOfLex getTypeOfLex() {
+        return typeOfLex;
     }
-    int get_value() {
-        return v_lex;
+    int getValueOfLex() {
+        return valueOfLex;
     }
  }

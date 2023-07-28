@@ -9,8 +9,8 @@ public class Parser {
     Lex currentLex;
     TypeOfLex currentLexType;
     Scanner scan;
-    Deque<Integer> st_int = new ArrayDeque<>();
-    Deque<TypeOfLex> st_lex = new ArrayDeque<>();
+    Deque<Integer> stackInteger = new ArrayDeque<>();
+    Deque<TypeOfLex> stackTypeOfLex = new ArrayDeque<>();
     public ArrayList<Lex> poliz = new ArrayList<>();
 
     public Parser(String program) {
@@ -25,8 +25,8 @@ public class Parser {
         System.out.println("poliz");
         for (Lex l : poliz) {
             System.out.println(l.toString());
-            System.out.println(l.t_lex);
-            System.out.println(l.v_lex);
+            System.out.println(l.typeOfLex);
+            System.out.println(l.valueOfLex);
         }
         scan.freeResourse();
 
@@ -55,12 +55,12 @@ public class Parser {
 
     private void parseDefinitionOneType() {
         checkTypeOfLex(currentLex, TypeOfLex.LEX_ID);
-        st_int.push(currentLexVal);
+        stackInteger.push(currentLexVal);
         getNextLex();
         while (currentLexType == TypeOfLex.LEX_COMMA) {
             getNextLex();
             checkTypeOfLex(currentLex, TypeOfLex.LEX_ID);
-            st_int.push(currentLexVal);
+            stackInteger.push(currentLexVal);
             getNextLex();
         }
         checkTypeOfLex(currentLex, TypeOfLex.LEX_COLON);
@@ -201,7 +201,7 @@ public class Parser {
                 if (currentLexType == TypeOfLex.LEX_ASSIGN) {
                     eqType();
                     if (StatD.TID.get(previousLexVal).get_declare())
-                        st_lex.push(StatD.TID.get(previousLexVal).get_type());
+                        stackTypeOfLex.push(StatD.TID.get(previousLexVal).get_type());
                     else
                         throw new RuntimeException("not declared");
                     poliz.add(new Lex(TypeOfLex.POLIZ_ADDRESS, previousLexVal));
@@ -232,7 +232,7 @@ public class Parser {
         parseExpressionPart();
         if (currentLexType == TypeOfLex.LEX_EQ || currentLexType == TypeOfLex.LEX_LSS || currentLexType == TypeOfLex.LEX_GTR ||
                 currentLexType == TypeOfLex.LEX_LEQ || currentLexType == TypeOfLex.LEX_GEQ || currentLexType == TypeOfLex.LEX_NEQ) {
-            st_lex.push(currentLexType);
+            stackTypeOfLex.push(currentLexType);
             getNextLex();
             parseExpressionPart();
             checkOp();
@@ -242,7 +242,7 @@ public class Parser {
     private void parseExpressionPart() {
         parseTerm();
         while (currentLexType == TypeOfLex.LEX_PLUS || currentLexType == TypeOfLex.LEX_MINUS || currentLexType == TypeOfLex.LEX_OR) {
-            st_lex.push(currentLexType);
+            stackTypeOfLex.push(currentLexType);
             getNextLex();
             parseTerm();
             checkOp();
@@ -252,7 +252,7 @@ public class Parser {
     private void parseTerm() {
         parseFactor();
         while (currentLexType == TypeOfLex.LEX_TIMES || currentLexType == TypeOfLex.LEX_SLASH || currentLexType == TypeOfLex.LEX_AND) {
-            st_lex.push(currentLexType);
+            stackTypeOfLex.push(currentLexType);
             getNextLex();
             parseFactor();
             checkOp();
@@ -265,15 +265,15 @@ public class Parser {
             poliz.add(new Lex(TypeOfLex.LEX_ID, currentLexVal));
             getNextLex();
         } else if (currentLexType == TypeOfLex.LEX_NUM) {
-            st_lex.push(TypeOfLex.LEX_INT);
+            stackTypeOfLex.push(TypeOfLex.LEX_INT);
             poliz.add(currentLex);
             getNextLex();
         } else if (currentLexType == TypeOfLex.LEX_TRUE) {
-            st_lex.push(TypeOfLex.LEX_BOOL);
+            stackTypeOfLex.push(TypeOfLex.LEX_BOOL);
             poliz.add(new Lex(TypeOfLex.LEX_TRUE, 1));
             getNextLex();
         } else if (currentLexType == TypeOfLex.LEX_FALSE) {
-            st_lex.push(TypeOfLex.LEX_BOOL);
+            stackTypeOfLex.push(TypeOfLex.LEX_BOOL);
             poliz.add(new Lex(TypeOfLex.LEX_FALSE, 0));
             getNextLex();
         } else if (currentLexType == TypeOfLex.LEX_NOT) {
@@ -291,8 +291,8 @@ public class Parser {
 
     private void updateTID(TypeOfLex type) {
         int i;
-        while (st_int.size() > 0) {
-            i = StatD.from_st_i(st_int);
+        while (stackInteger.size() > 0) {
+            i = StatD.fromStack(stackInteger);
             if (StatD.TID.get(i).get_declare())
                 throw new RuntimeException("twice");
             else {
@@ -304,7 +304,7 @@ public class Parser {
 
     private void checkId() {
         if (StatD.TID.get(currentLexVal).get_declare())
-            st_lex.push(StatD.TID.get(currentLexVal).get_type());
+            stackTypeOfLex.push(StatD.TID.get(currentLexVal).get_type());
         else
             throw new RuntimeException("not declared");
     }
@@ -312,40 +312,40 @@ public class Parser {
     private void checkOp() {
         TypeOfLex t1, t2, op, t = TypeOfLex.LEX_INT, r = TypeOfLex.LEX_BOOL;
 
-        t2 = StatD.from_st_t(st_lex);
-        op = StatD.from_st_t(st_lex);
-        t1 = StatD.from_st_t(st_lex);
+        t2 = StatD.fromStack(stackTypeOfLex);
+        op = StatD.fromStack(stackTypeOfLex);
+        t1 = StatD.fromStack(stackTypeOfLex);
 
         if (op == TypeOfLex.LEX_PLUS || op == TypeOfLex.LEX_MINUS || op == TypeOfLex.LEX_TIMES || op == TypeOfLex.LEX_SLASH)
             r = TypeOfLex.LEX_INT;
         if (op == TypeOfLex.LEX_OR || op == TypeOfLex.LEX_AND)
             t = TypeOfLex.LEX_BOOL;
         if (t1 == t2 && t1 == t)
-            st_lex.push(r);
+            stackTypeOfLex.push(r);
         else
             throw new RuntimeException("wrong types are in operation");
         poliz.add(new Lex(op));
     }
 
     private void checkNot() {
-        if (st_lex.peek() != TypeOfLex.LEX_BOOL)
+        if (stackTypeOfLex.peek() != TypeOfLex.LEX_BOOL)
             throw new RuntimeException("wrong type is in not");
         else
             poliz.add(new Lex(TypeOfLex.LEX_NOT));
     }
 
     private void eqType() {
-        TypeOfLex t;
-        t = StatD.from_st_t(st_lex);
-        if (t != st_lex.peek())
+        TypeOfLex typeOfLex;
+        typeOfLex = StatD.fromStack(stackTypeOfLex);
+        if (typeOfLex != stackTypeOfLex.peek())
             throw new RuntimeException("wrong types are in :=");
-        st_lex.pop();
+        stackTypeOfLex.pop();
     }
 
     private void eqBool() {
-        if (st_lex.peek() != TypeOfLex.LEX_BOOL)
+        if (stackTypeOfLex.peek() != TypeOfLex.LEX_BOOL)
             throw new RuntimeException("expression is not boolean");
-        st_lex.pop();
+        stackTypeOfLex.pop();
     }
 
     private void checkIdInRead() {
@@ -355,8 +355,8 @@ public class Parser {
 
     private void getNextLex() {
         currentLex = scan.get_lex();
-        currentLexType = currentLex.get_type();
-        currentLexVal = currentLex.get_value();
+        currentLexType = currentLex.getTypeOfLex();
+        currentLexVal = currentLex.getValueOfLex();
         System.out.println("gl");
         System.out.println(currentLexType);
         System.out.println(currentLexVal);
@@ -368,7 +368,7 @@ public class Parser {
     }
 
     private void checkTypeOfLex(Lex lex, TypeOfLex typeOfLex) {
-        if (lex.get_type() != typeOfLex) {
+        if (lex.getTypeOfLex() != typeOfLex) {
             throw new RuntimeException(lex.toString());
         }
     }

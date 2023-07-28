@@ -13,14 +13,9 @@ public class StatD {
 	public static ArrayList<Ident> TID;
 	public static ArrayList<String> restArg;
 	
-	static int from_st_i(Deque<Integer> st) {
-	    int i = st.peek();
-		st.pop();
-	    return i;
+	static <T> T fromStack(Deque<T> stack) {
+		T stackTop = stack.remove();
+		return stackTop;
 	}
-	static TypeOfLex from_st_t(Deque<TypeOfLex> st) {
-		TypeOfLex i = st.peek();
-		st.pop();
-	    return i;
-	}
+
 }
