@@ -4,8 +4,8 @@ public class Interpretator {
     Parser pars;
     Executer E = new Executer();
 
-    public Interpretator(String program) {
-        pars = new Parser(program);
+    public Interpretator() {
+        pars = new Parser();
     }
 
     public void interpretation() {

@@ -12,7 +12,9 @@ public class StatD {
 	public static GraphicsService graphicsService;
 	public static ArrayList<Ident> TID;
 	public static ArrayList<String> restArg;
-	
+	public static char[]  sourceText;
+	public static byte[] fileContent;
+
 	static <T> T fromStack(Deque<T> stack) {
 		T stackTop = stack.remove();
 		return stackTop;

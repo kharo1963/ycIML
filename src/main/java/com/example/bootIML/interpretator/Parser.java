@@ -13,8 +13,8 @@ public class Parser {
     Deque<TypeOfLex> stackTypeOfLex = new ArrayDeque<>();
     public ArrayList<Lex> poliz = new ArrayList<>();
 
-    public Parser(String program) {
-        scan = new Scanner(program);
+    public Parser() {
+        scan = new Scanner();
     }
 
     public void analyze() {
@@ -28,7 +28,6 @@ public class Parser {
             System.out.println(l.typeOfLex);
             System.out.println(l.valueOfLex);
         }
-        scan.freeResourse();
 
         System.out.println();
         System.out.println("Yes!!!");
@@ -194,7 +193,7 @@ public class Parser {
             getNextLex();
             while (currentLexType == TypeOfLex.LEX_ID) {
                 checkId();
-                scan.store_pos();
+                scan.storePos();
                 previousLexVal = currentLexVal;
                 previousLexType = currentLexType;
                 getNextLex();
@@ -209,7 +208,7 @@ public class Parser {
                     ++idCnt;
                     continue;
                 }
-                scan.restore_pos();
+                scan.restorePos();
                 currentLexVal = previousLexVal;
                 currentLexType = previousLexType;
                 break;

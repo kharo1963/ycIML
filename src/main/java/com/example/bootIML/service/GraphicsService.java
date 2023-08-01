@@ -6,6 +6,7 @@ import com.example.bootIML.graphics3D.Triangle;
 import com.example.bootIML.graphics3D.Vertex;
 import com.example.bootIML.interpretator.StatD;
 import com.example.bootIML.jcodec.javase.api.awt.AWTSequenceEncoder;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class GraphicsService {
@@ -37,18 +37,17 @@ public class GraphicsService {
         StatD.graphicsService = this;
     }
 
-    public void createSpinCube (int x, int y, int z, int angularVelocity) {
+    public byte[] createSpinCube (int x, int y, int z, int angularVelocity) {
 
         xyzoTransform = initTransform(heading, pitch, roll);
         transform = xyzoTransform[0]
                 .multiply(xyzoTransform[1])
                 .multiply(xyzoTransform[2]);
-                //.multiply(xyzoTransform[3]);
-        //currentTransform = currentTransform.multiply(xyzoTransform[3]);
 
+        String resultFile = System.getProperty("java.io.tmpdir") + File.separator + "spincubevideo.mp4";
+        byte[] fileContent = new byte[0];
         try {
-            AWTSequenceEncoder encoder = AWTSequenceEncoder.create2997Fps(new File("spincube.mp4"));
-            //BufferedImage img = drawImage(x, y, z, angularVelocity);
+            AWTSequenceEncoder encoder = AWTSequenceEncoder.create2997Fps(new File(resultFile));
             for (int i = 0; i < 100; i++) {
                 if (i % 1 == 0) {
                     transform = transform
@@ -62,19 +61,14 @@ public class GraphicsService {
                 encoder.encodeImage(img);
             }
             encoder.finish();
+            fileContent = FileUtils.readFileToByteArray(new File(resultFile));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String resultFile = System.getProperty("java.io.tmpdir") + File.separator + "spincubevideo.mp4";
         Path resultPath = Paths.get(resultFile);
-        Path srcPath = Paths.get("spincube.mp4");
-        System.out.println("srcPath " + srcPath);
         System.out.println("resultPath " + resultPath);
-        try {
-            Files.copy(srcPath, resultPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        return fileContent;
     };
 
     BufferedImage drawImage (int pivotx, int pivoty, int pivotz, int angularVelocity) {

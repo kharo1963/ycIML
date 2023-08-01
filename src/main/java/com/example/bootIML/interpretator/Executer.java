@@ -122,7 +122,7 @@ public class Executer {
                     spinCubeParams[0] = StatD.fromStack(arguments);
                     System.out.println("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
                     ArrayFilFiles.filFiles.add("spinCube");
-                    StatD.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
+                    StatD.fileContent = StatD.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
 
                 case LEX_PLUS:
