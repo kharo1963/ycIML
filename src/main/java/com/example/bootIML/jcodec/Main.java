@@ -1,6 +1,7 @@
 package com.example.bootIML.jcodec;
 
 import com.example.bootIML.jcodec.javase.api.awt.AWTSequenceEncoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,12 +9,11 @@ import java.awt.image.IndexColorModel;
 import java.io.*;
 import java.util.Random;
 
+@Slf4j
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("jcodecDemo "+ com.example.bootIML.jcodec.Main.class.getPackage().getName());
-        System.out.println();
-
+        log.info("jcodecDemo "+ com.example.bootIML.jcodec.Main.class.getPackage().getName());
         try {
             testWriting(new File("video.mp4"));
         } catch (IOException ex) {
@@ -22,8 +22,7 @@ public class Main {
     }
 
     private static void testWriting(File file) throws IOException {
-        System.out.println("Writing " + file);
-
+        log.info("Writing " + file);
         // Create a buffered image for this format
         BufferedImage img = createImage(24,320, 160);
         Graphics2D g = img.createGraphics();

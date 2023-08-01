@@ -99,7 +99,7 @@ public class MDecoder {
      * Special decoding process for 'end of slice' flag. Uses probability state
      * 63.
      *
-     * @param cm
+     * @param
      * @return
      * @throws IOException
      */
