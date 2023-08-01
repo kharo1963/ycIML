@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import com.example.bootIML.service.InterpretatorService;
+import com.example.bootIML.service.StorageException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,23 +22,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.bootIML.service.StorageService;
-import com.example.bootIML.service.ArrayFilFiles;
 import com.example.bootIML.interpretator.StatD;
-import com.example.bootIML.interpretator.Interpretator;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class InterpretatorController {
 
-    private final StorageService storageService;
+    private final InterpretatorService interpretatorService;
 
     @GetMapping("/")
     public String handleUploadForm(Model model) {
-
         return "uploadForm";
-
     }
 
     @PostMapping("/")
@@ -45,59 +42,22 @@ public class InterpretatorController {
                                    @RequestParam("file") MultipartFile file,
                                    @RequestParam("sourceText") String sourceText,
                                    RedirectAttributes redirectAttributes) {
-
-        String srcCode    = "";
-        String resultText = "";
-        Path path;
-
-        StatD.TID = new ArrayList<>();
-        StatD.restArg = new ArrayList<>();
-        ArrayFilFiles.filFiles = new ArrayList();
-
         if (!file.isEmpty()) {
-            sourceText = "";
-            srcCode = storageService.store(file);
-            path = Paths.get(srcCode);
-            try {
-                List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-                for (String line : lines) {
-                    sourceText += line + System.lineSeparator();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sourceText = fileToString (file);
         }
-
-        try {
-            log.info("Start " + srcCode);
-            StatD.sourceText = sourceText.toCharArray();
-            Interpretator I = new Interpretator();
-            I.interpretation();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        for (Object line : ArrayFilFiles.filFiles) {
-            resultText += line + System.lineSeparator();
-        }
-
+        String resultText = interpretatorService.invokeInterpretator(sourceText);
         redirectAttributes.addFlashAttribute("resultText", resultText);
         redirectAttributes.addFlashAttribute("sourceText", sourceText);
-
         log.info("resultText.indexOf(spinCube)" + resultText.indexOf("spinCube"));
-
         if (resultText.indexOf("spinCube") >= 0) {
-
             String resultFile64  = Base64.getEncoder().encodeToString(StatD.fileContent);
             String resultVideo64 = "data:video/mp4;base64," + resultFile64;
             model.addAttribute("resultVideo64", resultVideo64);
             model.addAttribute("videoOperator", "Результат выполнения оператора spinCube");
-
             return "mp4Form";
         }
-
         String redirectURL = transformRedirectUrl (request, "/");
         return redirectURL;
-
     }
 
     @PostMapping("/addSample")
@@ -137,6 +97,17 @@ public class InterpretatorController {
                            + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
         log.info("redirectURL " + redirectURL);
         return "redirect:" + redirectURL;
+    }
+    private String fileToString  (MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+            }
+            log.info(file.getInputStream().toString());
+            return new String(file.getBytes());
+        } catch (IOException e) {
+            throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+        }
     }
 
 }
