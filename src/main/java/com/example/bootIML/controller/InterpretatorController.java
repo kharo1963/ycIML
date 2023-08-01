@@ -5,12 +5,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import com.example.bootIML.service.InterpretatorService;
-import com.example.bootIML.service.StorageException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,12 +99,12 @@ public class InterpretatorController {
     private String fileToString  (MultipartFile file) {
         try {
             if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+                throw new RuntimeException ("Failed to store empty file " + file.getOriginalFilename());
             }
             log.info(file.getInputStream().toString());
             return new String(file.getBytes());
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+            throw new RuntimeException("Failed to getBytes from file " + file.getOriginalFilename(), e);
         }
     }
 
