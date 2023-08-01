@@ -22,7 +22,7 @@ class BootImlApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println("TEST: contexLoads");
+		log.info("TEST: contexLoads");
 	}
 
 	@Test
