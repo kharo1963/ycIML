@@ -91,11 +91,6 @@ public class GraphicsService {
             Vertex v2 = currentTransform.transform(t.v2);
             Vertex v3 = currentTransform.transform(t.v3);
 
-//            System.out.println("---------------------------");
-//            System.out.println("v1 v2 v3 x" + v1.x + " " + v2.x + " " + v3.x);
-//            System.out.println("v1 v2 v3 y" + v1.y + " " + v2.y + " " + v3.y);
-//            System.out.println("v1 v2 v3 z" + v1.z + " " + v2.z + " " + v3.z);
-
             Vertex ab = new Vertex(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z, v2.w - v1.w);
             Vertex ac = new Vertex(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z, v3.w - v1.w);
             Vertex norm = new Vertex(
