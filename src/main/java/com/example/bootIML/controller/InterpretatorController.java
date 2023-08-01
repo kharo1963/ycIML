@@ -1,12 +1,7 @@
 package com.example.bootIML.controller;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.List;
 
 import com.example.bootIML.service.InterpretatorService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,26 +57,11 @@ public class InterpretatorController {
     public String handleAddSample(HttpServletRequest request,
                                   RedirectAttributes redirectAttributes) {
 
-        String sourceText = "";
-
-        log.info("addSample");
-
-        Path path = Paths.get("ext-gcd.txt");
-        try {
-            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            for (String line : lines) {
-                sourceText += line + System.lineSeparator();            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            sourceText = "program var x,y : int ;  begin x := y := 1 ; write (x); write (y) end @";
-        }
+        String sourceText = interpretatorService.addSample();;
         redirectAttributes.addFlashAttribute("sourceText", sourceText);
-
         String redirectURL = transformRedirectUrl (request, "/");
         return redirectURL;
-
     }
-
 
     private String transformRedirectUrl (HttpServletRequest request, String requestURI) {
 
@@ -96,6 +76,7 @@ public class InterpretatorController {
         log.info("redirectURL " + redirectURL);
         return "redirect:" + redirectURL;
     }
+
     private String fileToString  (MultipartFile file) {
         try {
             if (file.isEmpty()) {

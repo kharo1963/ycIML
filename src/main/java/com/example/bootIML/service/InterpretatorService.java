@@ -6,7 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -30,5 +36,20 @@ public class InterpretatorService {
             resultText += line + System.lineSeparator();
         }
         return resultText;
+    }
+
+    public String addSample() {
+        String sourceText = "";
+        log.info("addSample");
+        Path path = Paths.get("ext-gcd.txt");
+        try {
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            for (String line : lines) {
+                sourceText += line + System.lineSeparator();            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            sourceText = "program var x,y : int ;  begin x := y := 1 ; write (x); write (y) end @";
+        }
+        return sourceText;
     }
 }
