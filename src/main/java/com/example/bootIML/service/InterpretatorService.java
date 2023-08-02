@@ -2,7 +2,6 @@ package com.example.bootIML.service;
 
 import com.example.bootIML.interpretator.Interpretator;
 import com.example.bootIML.interpretator.SourceProgram;
-import com.example.bootIML.interpretator.StatD;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class InterpretatorService {
         log.info("Start invokeInterpretator");
         sourceProgram = new SourceProgram(sourceText.toCharArray(), imlParamServiceImpl, graphicsService);
         sourceProgram.TID = new ArrayList<>();
-        StatD.restArg = new ArrayList<>();
+        sourceProgram.restArg = new ArrayList<>();
         sourceProgram.filFiles = new ArrayList();
         Interpretator interpretator = new Interpretator(sourceProgram);
         interpretator.interpretation();

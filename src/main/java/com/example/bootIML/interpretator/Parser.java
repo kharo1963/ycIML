@@ -293,7 +293,7 @@ public class Parser {
     private void updateTID(TypeOfLex type) {
         int i;
         while (stackInteger.size() > 0) {
-            i = StatD.fromStack(stackInteger);
+            i = stackInteger.remove();
             if (sourceProgram.TID.get(i).get_declare())
                 throw new RuntimeException("twice");
             else {
@@ -313,9 +313,9 @@ public class Parser {
     private void checkOp() {
         TypeOfLex t1, t2, op, t = TypeOfLex.LEX_INT, r = TypeOfLex.LEX_BOOL;
 
-        t2 = StatD.fromStack(stackTypeOfLex);
-        op = StatD.fromStack(stackTypeOfLex);
-        t1 = StatD.fromStack(stackTypeOfLex);
+        t2 = stackTypeOfLex.remove();
+        op = stackTypeOfLex.remove();
+        t1 = stackTypeOfLex.remove();
 
         if (op == TypeOfLex.LEX_PLUS || op == TypeOfLex.LEX_MINUS || op == TypeOfLex.LEX_TIMES || op == TypeOfLex.LEX_SLASH)
             r = TypeOfLex.LEX_INT;
@@ -337,7 +337,7 @@ public class Parser {
 
     private void eqType() {
         TypeOfLex typeOfLex;
-        typeOfLex = StatD.fromStack(stackTypeOfLex);
+        typeOfLex = stackTypeOfLex.remove();
         if (typeOfLex != stackTypeOfLex.peek())
             throw new RuntimeException("wrong types are in :=");
         stackTypeOfLex.pop();

@@ -4,7 +4,6 @@ import com.example.bootIML.graphics3D.Cube;
 import com.example.bootIML.graphics3D.Matrix4;
 import com.example.bootIML.graphics3D.Triangle;
 import com.example.bootIML.graphics3D.Vertex;
-import com.example.bootIML.interpretator.StatD;
 import com.example.bootIML.jcodec.javase.api.awt.AWTSequenceEncoder;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;

@@ -13,6 +13,7 @@ public class SourceProgram {
 
     public static ImlParamServiceImpl imlParamServiceImpl;
     public static GraphicsService graphicsService;
+    public ArrayList<String> restArg;
     public ArrayList<Ident> TID;
     public byte[] fileContent;
     public ArrayList filFiles;
@@ -27,6 +28,7 @@ public class SourceProgram {
         this.imlParamServiceImpl = imlParamServiceImpl;
         this.graphicsService = graphicsService;
     }
+
     char getNextChar() {
         return sourceText[currentPos++];
     }

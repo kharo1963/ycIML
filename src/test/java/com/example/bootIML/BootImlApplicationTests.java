@@ -2,7 +2,6 @@ package com.example.bootIML;
 
 import com.example.bootIML.interpretator.Interpretator;
 import com.example.bootIML.interpretator.SourceProgram;
-import com.example.bootIML.interpretator.StatD;
 import com.example.bootIML.service.GraphicsService;
 import com.example.bootIML.service.ImlParamServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,6 @@ class BootImlApplicationTests {
 	void testInterpretator() {
 		String srcCode = System.getProperty("user.dir") + System.getProperty("file.separator") + "ext-gcd.txt";
 		log.info("TEST: testInterpretator");
-		StatD.restArg = new ArrayList<>();
 		log.info(srcCode);
 		String sourceText = "";
 		Path path = Paths.get(srcCode);
@@ -47,6 +45,7 @@ class BootImlApplicationTests {
 			e.printStackTrace();
 		}
 		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(),imlParamServiceImpl, graphicsService);
+		sourceProgram.restArg = new ArrayList<>();
 		sourceProgram.TID = new ArrayList<>();
 		sourceProgram.filFiles = new ArrayList();
 		Interpretator interpretator = new Interpretator(sourceProgram);

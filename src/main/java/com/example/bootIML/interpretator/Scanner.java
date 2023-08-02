@@ -154,8 +154,8 @@ public class Scanner {
             if (currentChar == ')') {
                 log.debug("getRestArg: " + buf);
                 sourceProgram.unGetChar();
-                StatD.restArg.add(buf);
-                return StatD.restArg.size() - 1;
+                sourceProgram.restArg.add(buf);
+                return sourceProgram.restArg.size() - 1;
               }
             else {
                 buf = buf + currentChar;

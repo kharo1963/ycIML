@@ -39,84 +39,84 @@ public class Executer {
                         throw new RuntimeException("POLIZ: indefinite identifier");
 
                 case LEX_NOT:
-                    i = StatD.fromStack(arguments);
+                    i = arguments.remove();
                     arguments.push(i == 0 ? 1 : 0);
                     break;
 
                 case LEX_OR:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j > 0 || i > 0 ? 1 : 0);
                     break;
 
                 case LEX_AND:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j > 0 && i > 0 ? 1 : 0);
                     break;
 
                 case POLIZ_GO:
-                    i = StatD.fromStack(arguments);
+                    i = arguments.remove();
                     index = i - 1;
                     break;
 
                 case POLIZ_FGO:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     if (j == 0) index = i - 1;
                     break;
 
                 case LEX_WRITE:
-                    j = StatD.fromStack(arguments);
+                    j = arguments.remove();
                     sourceProgram.filFiles.add(j);
                     break;
 
                 case LEX_GET:
                     int restArgVal;
                     String restArgStr;
-                    i = StatD.fromStack(arguments);
-                    restArgStr = StatD.restArg.get(i);
+                    i = arguments.remove();
+                    restArgStr = sourceProgram.restArg.get(i);
                     log.debug("case LEX_GET restArgStr: " + restArgStr);
                     String[] readParams = restArgStr.split("/");
                     restArgVal = sourceProgram.imlParamServiceImpl.readParam(readParams[0], readParams[1]);
                     log.debug("restArgVal: " + restArgVal);
-                    i = StatD.fromStack(arguments);
+                    i = arguments.remove();
                     sourceProgram.TID.get(i).put_value(restArgVal);
                     sourceProgram.TID.get(i).put_assign();
                     break;
 
                 case LEX_SPINCUBE:
                     int[] spinCubeParams = new int[4];
-                    spinCubeParams[3] = StatD.fromStack(arguments);
-                    spinCubeParams[2] = StatD.fromStack(arguments);
-                    spinCubeParams[1] = StatD.fromStack(arguments);
-                    spinCubeParams[0] = StatD.fromStack(arguments);
+                    spinCubeParams[3] = arguments.remove();
+                    spinCubeParams[2] = arguments.remove();
+                    spinCubeParams[1] = arguments.remove();
+                    spinCubeParams[0] = arguments.remove();
                     log.debug("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
                     sourceProgram.filFiles.add("spinCube");
                     sourceProgram.fileContent = sourceProgram.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
 
                 case LEX_PLUS:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(i + j);
                     break;
 
                 case LEX_TIMES:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(i * j);
                     break;
 
                 case LEX_MINUS:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j - i);
                     break;
 
                 case LEX_SLASH:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     if (i != 0) {
                         arguments.push(j / i);
                         break;
@@ -124,51 +124,51 @@ public class Executer {
                         throw new RuntimeException("POLIZ:divide by zero");
 
                 case LEX_EQ:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(i == j ? 1 : 0);
                     break;
 
                 case LEX_LSS:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j < i ? 1 : 0);
                     break;
 
                 case LEX_GTR:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j > i ? 1 : 0);
                     break;
 
                 case LEX_LEQ:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j <= i ? 1 : 0);
                     break;
 
                 case LEX_GEQ:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j >= i ? 1 : 0);
                     break;
 
                 case LEX_NEQ:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     arguments.push(j != i ? 1 : 0);
                     break;
 
                 case LEX_ASSIGN:
-                    i = StatD.fromStack(arguments);
-                    j = StatD.fromStack(arguments);
+                    i = arguments.remove();
+                    j = arguments.remove();
                     sourceProgram.TID.get(j).put_value(i);
                     sourceProgram.TID.get(j).put_assign();
                     arguments.push(i);
                     break;
 
                 case LEX_SEMICOLON:
-                    StatD.fromStack(arguments);
+                    arguments.remove();
                     break;
 
                 default:
