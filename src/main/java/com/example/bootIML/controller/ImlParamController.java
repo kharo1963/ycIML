@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.example.bootIML.model.ImlParam;
 import com.example.bootIML.service.ImlParamService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 public class ImlParamController {
 
@@ -38,10 +40,7 @@ public class ImlParamController {
     @GetMapping(value = "/imlParam/{id}")
     public ResponseEntity<ImlParam> read(@PathVariable(name = "id") int id) {
         final ImlParam imlParam = imlParamService.read(id);
-
-        System.out.println("imlParamController.read:");
-        System.out.println(imlParam.getParamName());
-
+        log.info ("imlParamController.read: " + imlParam.getParamName());
         return imlParam != null
                 ? new ResponseEntity<>(imlParam, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

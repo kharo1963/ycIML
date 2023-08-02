@@ -1,5 +1,8 @@
 package com.example.bootIML.interpretator;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Scanner {
     SourceProgram sourceProgram;
 
@@ -148,8 +151,7 @@ public class Scanner {
          do {
             currentChar = sourceProgram.getNextChar();
             if (currentChar == ')') {
-                System.out.println("getRestArg");
-                System.out.println(buf);
+                log.debug("getRestArg: " + buf);
                 sourceProgram.unGetChar();
                 StatD.restArg.add(buf);
                 return StatD.restArg.size() - 1;

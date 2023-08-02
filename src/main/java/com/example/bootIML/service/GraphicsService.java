@@ -13,8 +13,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class GraphicsService {
@@ -32,7 +30,6 @@ public class GraphicsService {
             0, 0, 0, 1
     });
     GraphicsService () {
-        System.out.println("GraphicsService Start");
         StatD.graphicsService = this;
     }
 
@@ -64,17 +61,12 @@ public class GraphicsService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Path resultPath = Paths.get(resultFile);
-        System.out.println("resultPath " + resultPath);
-
         return fileContent;
     };
 
     BufferedImage drawImage (int pivotx, int pivoty, int pivotz, int angularVelocity) {
 
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        //System.out.println("new BufferedImage width = " + width + "height = " + height);
-
         double[] zBuffer = new double[img.getWidth() * img.getHeight()];
         // initialize array with extremely far away depths
         for (int q = 0; q < zBuffer.length; q++) {
@@ -120,20 +112,12 @@ public class GraphicsService {
             v3.x += viewportWidth / 2;
             v3.y += viewportHeight / 2;
 
-//            System.out.println("");
-//            System.out.println("v1 v2 v3 x" + v1.x + " " + v2.x + " " + v3.x);
-//            System.out.println("v1 v2 v3 y" + v1.y + " " + v2.y + " " + v3.y);
-//            System.out.println("v1 v2 v3 z" + v1.z + " " + v2.z + " " + v3.z);
-
-
             int minX = (int) Math.max(0, Math.ceil(Math.min(v1.x, Math.min(v2.x, v3.x))));
             int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(v1.x, Math.max(v2.x, v3.x))));
             int minY = (int) Math.max(0, Math.ceil(Math.min(v1.y, Math.min(v2.y, v3.y))));
             int maxY = (int) Math.min(img.getHeight() - 1, Math.floor(Math.max(v1.y, Math.max(v2.y, v3.y))));
 
             double triangleArea = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x);
-
-            //System.out.println("minY = " + minY + " maxY = " + maxY + "minX = " + minX + " maxX = " + maxX);
 
             for (int y = minY; y <= maxY; y++) {
                 for (int x = minX; x <= maxX; x++) {
@@ -148,15 +132,10 @@ public class GraphicsService {
                             zBuffer[zIndex] = depth;
                         }
                     }
-
-//                    Color myWhite = new Color(255, 255, 255); // Color white
-//                    int rgb = myWhite.getRGB();
-//                    img.setRGB(x, y, rgb);
                 }
             }
 
         }
-
         return img;
     }
 

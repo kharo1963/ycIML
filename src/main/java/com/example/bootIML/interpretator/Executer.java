@@ -6,7 +6,9 @@ import java.util.Deque;
 import java.util.Scanner;
 
 import com.example.bootIML.service.ArrayFilFiles;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Executer {
 
     public void Execute(ArrayList<Lex> poliz) {
@@ -64,35 +66,7 @@ public class Executer {
 
                 case LEX_WRITE:
                     j = StatD.fromStack(arguments);
-                    System.out.println(j);
                     ArrayFilFiles.filFiles.add(j);
-                    break;
-
-                case LEX_READ:
-                    int k;
-                    i = StatD.fromStack(arguments);
-                    if (StatD.TID.get(i).get_type() == TypeOfLex.LEX_INT) {
-                        System.out.println("Input int value for " + StatD.TID.get(i).get_name());
-                        Scanner in = new Scanner(System.in);
-                        k = in.nextInt();
-                        in.close();
-                    } else {
-                        String js;
-                        while (true) {
-                            System.out.println("Input boolean value (true or false) for " + StatD.TID.get(i).get_name());
-                            Scanner in = new Scanner(System.in);
-                            js = in.nextLine();
-                            in.close();
-                            if (!js.equals("true") && !js.equals("false")) {
-                                System.out.println("Error in input:true/false");
-                                continue;
-                            }
-                            k = (js.equals("true")) ? 1 : 0;
-                            break;
-                        }
-                    }
-                    StatD.TID.get(i).put_value(k);
-                    StatD.TID.get(i).put_assign();
                     break;
 
                 case LEX_GET:
@@ -100,15 +74,10 @@ public class Executer {
                     String restArgStr;
                     i = StatD.fromStack(arguments);
                     restArgStr = StatD.restArg.get(i);
-                    System.out.println("case LEX_GET restArgStr:");
-                    System.out.println(restArgStr);
+                    log.debug("case LEX_GET restArgStr: " + restArgStr);
                     String[] readParams = restArgStr.split("/");
-                    System.out.println("readParams:");
-                    System.out.println(readParams[0]);
-                    System.out.println(readParams[1]);
                     restArgVal = StatD.imlParamServiceImpl.readParam(readParams[0], readParams[1]);
-                    System.out.println("restArgVal");
-                    System.out.println(restArgVal);
+                    log.debug("restArgVal: " + restArgVal);
                     i = StatD.fromStack(arguments);
                     StatD.TID.get(i).put_value(restArgVal);
                     StatD.TID.get(i).put_assign();
@@ -120,7 +89,7 @@ public class Executer {
                     spinCubeParams[2] = StatD.fromStack(arguments);
                     spinCubeParams[1] = StatD.fromStack(arguments);
                     spinCubeParams[0] = StatD.fromStack(arguments);
-                    System.out.println("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
+                    log.debug("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
                     ArrayFilFiles.filFiles.add("spinCube");
                     StatD.fileContent = StatD.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
@@ -205,6 +174,6 @@ public class Executer {
             }//end of switch
             ++index;
         }//end of while
-        System.out.println("Finish of executing!!!");
+        log.info("Finish of executing!!!");
     }
 }

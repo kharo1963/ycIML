@@ -1,9 +1,12 @@
 package com.example.bootIML.interpretator;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 
+@Slf4j
 public class Parser {
     int currentLexVal;
     Lex currentLex;
@@ -22,15 +25,12 @@ public class Parser {
         parseProgram();
         checkTypeOfLex(currentLex, TypeOfLex.LEX_FIN);
 
-        System.out.println("poliz");
+        log.debug("poliz");
         for (Lex l : poliz) {
-            System.out.println(l.toString());
-            System.out.println(l.typeOfLex);
-            System.out.println(l.valueOfLex);
+            log.debug(l.toString());
+            log.debug(l.typeOfLex.toString() + " " + l.valueOfLex);
         }
-
-        System.out.println();
-        System.out.println("Yes!!!");
+        log.info("Parser worked successfully");
     }
 
     private void parseProgram() {
@@ -356,9 +356,7 @@ public class Parser {
         currentLex = scan.get_lex();
         currentLexType = currentLex.getTypeOfLex();
         currentLexVal = currentLex.getValueOfLex();
-        System.out.println("gl");
-        System.out.println(currentLexType);
-        System.out.println(currentLexVal);
+        log.debug("gl " + currentLexType + " " + currentLexVal);
     }
 
     private int glRestArg() {

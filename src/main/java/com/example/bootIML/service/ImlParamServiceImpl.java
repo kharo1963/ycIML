@@ -31,7 +31,6 @@ public class ImlParamServiceImpl implements ImlParamService {
 
     @Override
     public ImlParam read(int id) {
-        System.out.println("imlParamRepository.read");
         return imlParamRepository.getOne(id);
     }
 

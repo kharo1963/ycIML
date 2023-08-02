@@ -88,5 +88,4 @@ public class InterpretatorController {
             throw new RuntimeException("Failed to getBytes from file " + file.getOriginalFilename(), e);
         }
     }
-
 }
