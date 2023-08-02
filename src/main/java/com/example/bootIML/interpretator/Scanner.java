@@ -27,13 +27,13 @@ public class Scanner {
 
     int put(String buf) {
         int k = 0;
-        for (Ident l : StatD.TID) {
+        for (Ident l : sourceProgram.TID) {
         	if (buf.equals(l.name))
         		return k;
         	++k;
         }
-        StatD.TID.add(new Ident(buf));
-        return StatD.TID.size() - 1;
+        sourceProgram.TID.add(new Ident(buf));
+        return sourceProgram.TID.size() - 1;
     }
     
     TypeOfLex GetTypeOfOrd (int ord) {

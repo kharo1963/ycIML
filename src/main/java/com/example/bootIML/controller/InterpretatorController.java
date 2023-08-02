@@ -3,6 +3,7 @@ package com.example.bootIML.controller;
 import java.io.IOException;
 import java.util.Base64;
 
+import com.example.bootIML.interpretator.SourceProgram;
 import com.example.bootIML.service.InterpretatorService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.example.bootIML.interpretator.StatD;
 
 @Slf4j
 @Controller
@@ -38,12 +37,12 @@ public class InterpretatorController {
         if (!file.isEmpty()) {
             sourceText = fileToString (file);
         }
-        String resultText = interpretatorService.invokeInterpretator(sourceText);
-        redirectAttributes.addFlashAttribute("resultText", resultText);
+        SourceProgram sourceProgram = interpretatorService.invokeInterpretator(sourceText);
+        redirectAttributes.addFlashAttribute("resultText", sourceProgram.resultText);
         redirectAttributes.addFlashAttribute("sourceText", sourceText);
-        log.info("resultText.indexOf(spinCube)" + resultText.indexOf("spinCube"));
-        if (resultText.indexOf("spinCube") >= 0) {
-            String resultFile64  = Base64.getEncoder().encodeToString(StatD.fileContent);
+        log.info("resultText.indexOf(spinCube)" + sourceProgram.resultText.indexOf("spinCube"));
+        if (sourceProgram.resultText.indexOf("spinCube") >= 0) {
+            String resultFile64  = Base64.getEncoder().encodeToString(sourceProgram.fileContent);
             String resultVideo64 = "data:video/mp4;base64," + resultFile64;
             model.addAttribute("resultVideo64", resultVideo64);
             model.addAttribute("videoOperator", "Результат выполнения оператора spinCube");

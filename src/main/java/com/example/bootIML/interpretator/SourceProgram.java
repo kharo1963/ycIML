@@ -1,5 +1,7 @@
 package com.example.bootIML.interpretator;
 
+import com.example.bootIML.service.GraphicsService;
+import com.example.bootIML.service.ImlParamServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,15 +11,24 @@ import java.util.ArrayList;
 @Setter
 public class SourceProgram {
 
-    public static char[]  sourceText;
-    public static ArrayList filFiles;
+    public static ImlParamServiceImpl imlParamServiceImpl;
+    public static GraphicsService graphicsService;
+    public ArrayList<Ident> TID;
+    public byte[] fileContent;
+    public ArrayList filFiles;
+    public String resultText = "";
+    private char[]  sourceText;
     private int currentPos = 0;
 
-    public SourceProgram (char[]  sourceText){
+    public SourceProgram (char[]  sourceText,
+                          ImlParamServiceImpl imlParamServiceImpl,
+                          GraphicsService graphicsService){
         this.sourceText = sourceText;
+        this.imlParamServiceImpl = imlParamServiceImpl;
+        this.graphicsService = graphicsService;
     }
     char getNextChar() {
-        return StatD.sourceText[currentPos++];
+        return sourceText[currentPos++];
     }
 
     void unGetChar () {

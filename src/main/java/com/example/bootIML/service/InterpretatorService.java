@@ -19,22 +19,22 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InterpretatorService {
+    private final ImlParamServiceImpl  imlParamServiceImpl;
+    private final GraphicsService graphicsService;
 
-    public String invokeInterpretator (String sourceText){
-        String resultText = "";
-        SourceProgram sourceProgram ;
-        StatD.TID = new ArrayList<>();
-        StatD.restArg = new ArrayList<>();
+    public SourceProgram invokeInterpretator (String sourceText){
+        SourceProgram sourceProgram;
         log.info("Start invokeInterpretator");
-        StatD.sourceText = sourceText.toCharArray();
-        sourceProgram = new SourceProgram(sourceText.toCharArray());
+        sourceProgram = new SourceProgram(sourceText.toCharArray(), imlParamServiceImpl, graphicsService);
+        sourceProgram.TID = new ArrayList<>();
+        StatD.restArg = new ArrayList<>();
         sourceProgram.filFiles = new ArrayList();
         Interpretator interpretator = new Interpretator(sourceProgram);
         interpretator.interpretation();
         for (Object line : sourceProgram.filFiles) {
-            resultText += line + System.lineSeparator();
+            sourceProgram.resultText += line + System.lineSeparator();
         }
-        return resultText;
+        return sourceProgram;
     }
 
     public String addSample() {

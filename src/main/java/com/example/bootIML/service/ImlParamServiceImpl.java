@@ -17,8 +17,6 @@ public class ImlParamServiceImpl implements ImlParamService {
     @Autowired
     private ImlParamRepository imlParamRepository;
 
-    ImlParamServiceImpl () {StatD.imlParamServiceImpl = this;}
-
     @Override
     public void create(ImlParam imlParam) {
         imlParamRepository.save(imlParam);

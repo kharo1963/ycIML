@@ -9,6 +9,7 @@ import java.util.Deque;
 @Slf4j
 public class Parser {
     int currentLexVal;
+    SourceProgram sourceProgram;
     Lex currentLex;
     TypeOfLex currentLexType;
     Scanner scan;
@@ -17,6 +18,7 @@ public class Parser {
     public ArrayList<Lex> poliz = new ArrayList<>();
 
     public Parser(SourceProgram sourceProgram) {
+        this.sourceProgram = sourceProgram;
         scan = new Scanner(sourceProgram);
     }
 
@@ -199,8 +201,8 @@ public class Parser {
                 getNextLex();
                 if (currentLexType == TypeOfLex.LEX_ASSIGN) {
                     eqType();
-                    if (StatD.TID.get(previousLexVal).get_declare())
-                        stackTypeOfLex.push(StatD.TID.get(previousLexVal).get_type());
+                    if (sourceProgram.TID.get(previousLexVal).get_declare())
+                        stackTypeOfLex.push(sourceProgram.TID.get(previousLexVal).get_type());
                     else
                         throw new RuntimeException("not declared");
                     poliz.add(new Lex(TypeOfLex.POLIZ_ADDRESS, previousLexVal));
@@ -292,18 +294,18 @@ public class Parser {
         int i;
         while (stackInteger.size() > 0) {
             i = StatD.fromStack(stackInteger);
-            if (StatD.TID.get(i).get_declare())
+            if (sourceProgram.TID.get(i).get_declare())
                 throw new RuntimeException("twice");
             else {
-                StatD.TID.get(i).put_declare();
-                StatD.TID.get(i).put_type(type);
+                sourceProgram.TID.get(i).put_declare();
+                sourceProgram.TID.get(i).put_type(type);
             }
         }
     }
 
     private void checkId() {
-        if (StatD.TID.get(currentLexVal).get_declare())
-            stackTypeOfLex.push(StatD.TID.get(currentLexVal).get_type());
+        if (sourceProgram.TID.get(currentLexVal).get_declare())
+            stackTypeOfLex.push(sourceProgram.TID.get(currentLexVal).get_type());
         else
             throw new RuntimeException("not declared");
     }
@@ -348,7 +350,7 @@ public class Parser {
     }
 
     private void checkIdInRead() {
-        if (!StatD.TID.get(currentLexVal).get_declare())
+        if (!sourceProgram.TID.get(currentLexVal).get_declare())
             throw new RuntimeException("not declared");
     }
 

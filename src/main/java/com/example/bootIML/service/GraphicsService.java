@@ -29,9 +29,6 @@ public class GraphicsService {
             0, 0, 1, 0,
             0, 0, 0, 1
     });
-    GraphicsService () {
-        StatD.graphicsService = this;
-    }
 
     public byte[] createSpinCube (int x, int y, int z, int angularVelocity) {
 

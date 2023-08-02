@@ -3,7 +3,6 @@ package com.example.bootIML.interpretator;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Scanner;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,8 +32,8 @@ public class Executer {
 
                 case LEX_ID:
                     i = currentPolizLex.getValueOfLex();
-                    if (StatD.TID.get(i).get_assign()) {
-                        arguments.push(StatD.TID.get(i).get_value());
+                    if (sourceProgram.TID.get(i).get_assign()) {
+                        arguments.push(sourceProgram.TID.get(i).get_value());
                         break;
                     } else
                         throw new RuntimeException("POLIZ: indefinite identifier");
@@ -79,11 +78,11 @@ public class Executer {
                     restArgStr = StatD.restArg.get(i);
                     log.debug("case LEX_GET restArgStr: " + restArgStr);
                     String[] readParams = restArgStr.split("/");
-                    restArgVal = StatD.imlParamServiceImpl.readParam(readParams[0], readParams[1]);
+                    restArgVal = sourceProgram.imlParamServiceImpl.readParam(readParams[0], readParams[1]);
                     log.debug("restArgVal: " + restArgVal);
                     i = StatD.fromStack(arguments);
-                    StatD.TID.get(i).put_value(restArgVal);
-                    StatD.TID.get(i).put_assign();
+                    sourceProgram.TID.get(i).put_value(restArgVal);
+                    sourceProgram.TID.get(i).put_assign();
                     break;
 
                 case LEX_SPINCUBE:
@@ -94,7 +93,7 @@ public class Executer {
                     spinCubeParams[0] = StatD.fromStack(arguments);
                     log.debug("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
                     sourceProgram.filFiles.add("spinCube");
-                    StatD.fileContent = StatD.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
+                    sourceProgram.fileContent = sourceProgram.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
 
                 case LEX_PLUS:
@@ -163,8 +162,8 @@ public class Executer {
                 case LEX_ASSIGN:
                     i = StatD.fromStack(arguments);
                     j = StatD.fromStack(arguments);
-                    StatD.TID.get(j).put_value(i);
-                    StatD.TID.get(j).put_assign();
+                    sourceProgram.TID.get(j).put_value(i);
+                    sourceProgram.TID.get(j).put_assign();
                     arguments.push(i);
                     break;
 
