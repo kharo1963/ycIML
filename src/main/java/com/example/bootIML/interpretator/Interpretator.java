@@ -1,15 +1,16 @@
 package com.example.bootIML.interpretator;
 
 public class Interpretator {
-    Parser pars;
-    Executer E = new Executer();
+    Parser parser;
+    Executer executer;
 
-    public Interpretator() {
-        pars = new Parser();
+    public Interpretator(SourceProgram sourceProgram) {
+        parser = new Parser(sourceProgram);
+        executer = new Executer(sourceProgram);
     }
 
     public void interpretation() {
-        pars.analyze();
-        E.Execute(pars.poliz);
+        parser.analyze();
+        executer.Execute(parser.poliz);
     }
 }

@@ -1,8 +1,8 @@
 package com.example.bootIML;
 
 import com.example.bootIML.interpretator.Interpretator;
+import com.example.bootIML.interpretator.SourceProgram;
 import com.example.bootIML.interpretator.StatD;
-import com.example.bootIML.service.ArrayFilFiles;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,8 +32,6 @@ class BootImlApplicationTests {
 
 		StatD.TID = new ArrayList<>();
 		StatD.restArg = new ArrayList<>();
-		ArrayFilFiles.filFiles = new ArrayList();
-
 		log.info(srcCode);
 		String sourceText = "";
 		Path path = Paths.get(srcCode);
@@ -45,13 +43,12 @@ class BootImlApplicationTests {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		StatD.sourceText = sourceText.toCharArray();
-		Interpretator I = new Interpretator();
-		I.interpretation();
-
-		ArrayFilFiles.filFiles.forEach(s -> System.out.println(s));
+		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray());
+		sourceProgram.filFiles = new ArrayList();
+		Interpretator interpretator = new Interpretator(sourceProgram);
+		interpretator.interpretation();
+		sourceProgram.filFiles.forEach(s -> System.out.println(s));
 		List<Integer> tstFiles = List.of(5, 3, 1, -1, 2);
-		Assertions.assertArrayEquals(ArrayFilFiles.filFiles.toArray(), tstFiles.toArray());
+		Assertions.assertArrayEquals(sourceProgram.filFiles.toArray(), tstFiles.toArray());
 	}
 }

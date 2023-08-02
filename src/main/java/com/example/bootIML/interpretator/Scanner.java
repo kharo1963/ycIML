@@ -5,10 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Scanner {
     SourceProgram sourceProgram;
-
     char currentChar;
     int savedPos;
-    
+    String TW[] = { "", "and", "begin", "bool", "do", "else", "end", "if", "false", "int", "not", "or", "program",
+            "read", "then", "true", "var", "while", "write", "get", "spincube"};
+    String TD[] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">="};
+
+    Scanner(SourceProgram sourceProgram) {
+        this.sourceProgram = sourceProgram;
+    }
+
     int look(String buf, String [] list) {
         int i = 0;
         while (i < list.length) {
@@ -40,12 +46,6 @@ public class Scanner {
 		return TypeOfLex.LEX_NULL;
     }
     
-    String TW[] = { "", "and", "begin", "bool", "do", "else", "end", "if", "false", "int", "not", "or", "program",
-        "read", "then", "true", "var", "while", "write", "get", "spincube"};
-    String TD[] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">="};
-   
-    Scanner() { sourceProgram = new SourceProgram(); }
-
     void storePos() {
         savedPos = sourceProgram.getCurrentPos();
     }
@@ -146,6 +146,7 @@ public class Scanner {
              } //end switch
         } while (true);
     }
+
     int getRestArg() {
         String buf = "";
          do {

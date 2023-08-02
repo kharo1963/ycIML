@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Scanner;
 
-import com.example.bootIML.service.ArrayFilFiles;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Executer {
+    SourceProgram sourceProgram;
 
+    Executer (SourceProgram sourceProgram) {
+        this.sourceProgram = sourceProgram;
+    }
     public void Execute(ArrayList<Lex> poliz) {
         Lex currentPolizLex;
         Deque<Integer> arguments = new ArrayDeque<Integer>();
@@ -66,7 +69,7 @@ public class Executer {
 
                 case LEX_WRITE:
                     j = StatD.fromStack(arguments);
-                    ArrayFilFiles.filFiles.add(j);
+                    sourceProgram.filFiles.add(j);
                     break;
 
                 case LEX_GET:
@@ -90,7 +93,7 @@ public class Executer {
                     spinCubeParams[1] = StatD.fromStack(arguments);
                     spinCubeParams[0] = StatD.fromStack(arguments);
                     log.debug("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
-                    ArrayFilFiles.filFiles.add("spinCube");
+                    sourceProgram.filFiles.add("spinCube");
                     StatD.fileContent = StatD.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
 

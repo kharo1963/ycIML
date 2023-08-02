@@ -16,8 +16,8 @@ public class Parser {
     Deque<TypeOfLex> stackTypeOfLex = new ArrayDeque<>();
     public ArrayList<Lex> poliz = new ArrayList<>();
 
-    public Parser() {
-        scan = new Scanner();
+    public Parser(SourceProgram sourceProgram) {
+        scan = new Scanner(sourceProgram);
     }
 
     public void analyze() {
