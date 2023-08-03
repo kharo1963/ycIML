@@ -11,8 +11,8 @@ import java.util.ArrayList;
 @Setter
 public class SourceProgram {
 
-    public static ImlParamServiceImpl imlParamServiceImpl;
-    public static GraphicsService graphicsService;
+    public ImlParamServiceImpl imlParamServiceImpl;
+    public GraphicsService graphicsService;
     public ArrayList<String> restArg;
     public ArrayList<Ident> TID;
     public byte[] fileContent;
