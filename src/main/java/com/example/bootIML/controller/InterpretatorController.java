@@ -35,11 +35,9 @@ public class InterpretatorController {
                                    @RequestParam("sourceText") String sourceText,
                                    RedirectAttributes redirectAttributes) {
         if (!file.isEmpty()) {
-            sourceText = fileToString (file);
+            sourceText = fileToString(file);
         }
         SourceProgram sourceProgram = interpretatorService.invokeInterpretator(sourceText);
-        redirectAttributes.addFlashAttribute("resultText", sourceProgram.resultText);
-        redirectAttributes.addFlashAttribute("sourceText", sourceText);
         log.info("resultText.indexOf(spinCube)" + sourceProgram.resultText.indexOf("spinCube"));
         if (sourceProgram.resultText.indexOf("spinCube") >= 0) {
             String resultFile64  = Base64.getEncoder().encodeToString(sourceProgram.fileContent);
@@ -48,7 +46,9 @@ public class InterpretatorController {
             model.addAttribute("videoOperator", "Результат выполнения оператора spinCube");
             return "mp4Form";
         }
-        String redirectURL = transformRedirectUrl (request, "/");
+        redirectAttributes.addFlashAttribute("resultText", sourceProgram.resultText);
+        redirectAttributes.addFlashAttribute("sourceText", sourceText);
+            String redirectURL = transformRedirectUrl (request, "/");
         return redirectURL;
     }
 

@@ -27,10 +27,10 @@ public class InterpretatorService {
         sourceProgram = new SourceProgram(sourceText.toCharArray(), imlParamServiceImpl, graphicsService);
         sourceProgram.TID = new ArrayList<>();
         sourceProgram.restArg = new ArrayList<>();
-        sourceProgram.filFiles = new ArrayList();
+        sourceProgram.resultList = new ArrayList();
         Interpretator interpretator = new Interpretator(sourceProgram);
         interpretator.interpretation();
-        for (Object line : sourceProgram.filFiles) {
+        for (Object line : sourceProgram.resultList) {
             sourceProgram.resultText += line + System.lineSeparator();
         }
         return sourceProgram;

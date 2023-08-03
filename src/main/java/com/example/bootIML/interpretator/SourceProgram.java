@@ -16,9 +16,9 @@ public class SourceProgram {
     public ArrayList<String> restArg;
     public ArrayList<Ident> TID;
     public byte[] fileContent;
-    public ArrayList filFiles;
+    public ArrayList resultList;
     public String resultText = "";
-    private char[]  sourceText;
+    private char[] sourceText;
     private int currentPos = 0;
 
     public SourceProgram (char[]  sourceText,

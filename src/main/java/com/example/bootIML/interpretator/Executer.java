@@ -68,7 +68,7 @@ public class Executer {
 
                 case LEX_WRITE:
                     j = arguments.remove();
-                    sourceProgram.filFiles.add(j);
+                    sourceProgram.resultList.add(j);
                     break;
 
                 case LEX_GET:
@@ -92,7 +92,7 @@ public class Executer {
                     spinCubeParams[1] = arguments.remove();
                     spinCubeParams[0] = arguments.remove();
                     log.debug("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
-                    sourceProgram.filFiles.add("spinCube");
+                    sourceProgram.resultList.add("spinCube");
                     sourceProgram.fileContent = sourceProgram.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
 

@@ -47,11 +47,11 @@ class BootImlApplicationTests {
 		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(),imlParamServiceImpl, graphicsService);
 		sourceProgram.restArg = new ArrayList<>();
 		sourceProgram.TID = new ArrayList<>();
-		sourceProgram.filFiles = new ArrayList();
+		sourceProgram.resultList = new ArrayList();
 		Interpretator interpretator = new Interpretator(sourceProgram);
 		interpretator.interpretation();
-		sourceProgram.filFiles.forEach(s -> System.out.println(s));
+		sourceProgram.resultList.forEach(s -> System.out.println(s));
 		List<Integer> tstFiles = List.of(5, 3, 1, -1, 2);
-		Assertions.assertArrayEquals(sourceProgram.filFiles.toArray(), tstFiles.toArray());
+		Assertions.assertArrayEquals(sourceProgram.resultList.toArray(), tstFiles.toArray());
 	}
 }
