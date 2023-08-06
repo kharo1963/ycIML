@@ -13,7 +13,8 @@ public enum TypeOfLex {
     POLIZ_LABEL,                                                                                /*40*/
     POLIZ_ADDRESS,                                                                              /*41*/
     POLIZ_GO,                                                                                   /*42*/
-    POLIZ_FGO                                                                                   /*43*/
+    POLIZ_FGO,                                                                                  /*43*/
+    LEX_GET_KAFKA, LEX_PUT_KAFKA                                                                /*44*/
 }
 
 

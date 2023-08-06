@@ -4,15 +4,20 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 
+import com.example.bootIML.kafka.KafkaMessage;
+import com.example.bootIML.service.ExecuterService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Executer {
     SourceProgram sourceProgram;
+    ExecuterService executerService;
 
     Executer (SourceProgram sourceProgram) {
         this.sourceProgram = sourceProgram;
+        this.executerService = sourceProgram.executerService;
     }
+
     public void Execute(ArrayList<Lex> poliz) {
         Lex currentPolizLex;
         Deque<Integer> arguments = new ArrayDeque<Integer>();
@@ -78,11 +83,19 @@ public class Executer {
                     restArgStr = sourceProgram.restArg.get(i);
                     log.debug("case LEX_GET restArgStr: " + restArgStr);
                     String[] readParams = restArgStr.split("/");
-                    restArgVal = sourceProgram.imlParamServiceImpl.readParam(readParams[0], readParams[1]);
+                    restArgVal = executerService.getImlParamServiceImpl().readParam(readParams[0], readParams[1]);
                     log.debug("restArgVal: " + restArgVal);
                     i = arguments.remove();
                     sourceProgram.TID.get(i).put_value(restArgVal);
                     sourceProgram.TID.get(i).put_assign();
+                    break;
+
+                case LEX_GET_KAFKA:
+                    executerService.getConsumer().startMessage ();
+                    break;
+
+                case LEX_PUT_KAFKA:
+                    executerService.getProducer().send(new KafkaMessage(1, "A simple test message"));
                     break;
 
                 case LEX_SPINCUBE:
@@ -93,7 +106,7 @@ public class Executer {
                     spinCubeParams[0] = arguments.remove();
                     log.debug("LEX_SPINCUBE" + " " + spinCubeParams[0] + " " + spinCubeParams[1] + " " + spinCubeParams[2] + " " + spinCubeParams[3]);
                     sourceProgram.resultList.add("spinCube");
-                    sourceProgram.fileContent = sourceProgram.graphicsService.createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
+                    sourceProgram.fileContent = executerService.getGraphicsService().createSpinCube(spinCubeParams[0], spinCubeParams[1], spinCubeParams[2], spinCubeParams[3]);
                     break;
 
                 case LEX_PLUS:

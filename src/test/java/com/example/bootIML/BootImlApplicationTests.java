@@ -2,8 +2,7 @@ package com.example.bootIML;
 
 import com.example.bootIML.interpretator.Interpretator;
 import com.example.bootIML.interpretator.SourceProgram;
-import com.example.bootIML.service.GraphicsService;
-import com.example.bootIML.service.ImlParamServiceImpl;
+import com.example.bootIML.service.ExecuterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -22,8 +21,7 @@ import java.util.List;
 @SpringBootTest
 @RequiredArgsConstructor
 class BootImlApplicationTests {
-	private final ImlParamServiceImpl imlParamServiceImpl;
-	private final GraphicsService graphicsService;
+	private final ExecuterService executerService;
 	@Test
 	void contextLoads() {
 		log.info("TEST: contexLoads");
@@ -31,7 +29,7 @@ class BootImlApplicationTests {
 
 	@Test
 	void testInterpretator() {
-		String srcCode = System.getProperty("user.dir") + System.getProperty("file.separator") + "ext-gcd.txt";
+		String srcCode = System.getProperty("user.dir") + System.getProperty("file.separator") + "m-ext-gcd.txt";
 		log.info("TEST: testInterpretator");
 		log.info(srcCode);
 		String sourceText = "";
@@ -44,7 +42,7 @@ class BootImlApplicationTests {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(),imlParamServiceImpl, graphicsService);
+		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
 		sourceProgram.restArg = new ArrayList<>();
 		sourceProgram.TID = new ArrayList<>();
 		sourceProgram.resultList = new ArrayList();

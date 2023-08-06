@@ -48,7 +48,7 @@ public class InterpretatorController {
         }
         redirectAttributes.addFlashAttribute("resultText", sourceProgram.resultText);
         redirectAttributes.addFlashAttribute("sourceText", sourceText);
-            String redirectURL = transformRedirectUrl (request, "/");
+        String redirectURL = transformRedirectUrl (request, "/");
         return redirectURL;
     }
 

@@ -18,13 +18,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InterpretatorService {
-    private final ImlParamServiceImpl  imlParamServiceImpl;
-    private final GraphicsService graphicsService;
+    private final ExecuterService executerService;
 
     public SourceProgram invokeInterpretator (String sourceText){
         SourceProgram sourceProgram;
         log.info("Start invokeInterpretator");
-        sourceProgram = new SourceProgram(sourceText.toCharArray(), imlParamServiceImpl, graphicsService);
+        sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
         sourceProgram.TID = new ArrayList<>();
         sourceProgram.restArg = new ArrayList<>();
         sourceProgram.resultList = new ArrayList();
@@ -39,7 +38,7 @@ public class InterpretatorService {
     public String addSample() {
         String sourceText = "";
         log.info("addSample");
-        Path path = Paths.get("ext-gcd.txt");
+        Path path = Paths.get("m-ext-gcd.txt");
         try {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
             for (String line : lines) {
