@@ -43,9 +43,6 @@ class BootImlApplicationTests {
 			e.printStackTrace();
 		}
 		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
-		sourceProgram.restArg = new ArrayList<>();
-		sourceProgram.TID = new ArrayList<>();
-		sourceProgram.resultList = new ArrayList();
 		Interpretator interpretator = new Interpretator(sourceProgram);
 		interpretator.interpretation();
 		sourceProgram.resultList.forEach(s -> System.out.println(s));

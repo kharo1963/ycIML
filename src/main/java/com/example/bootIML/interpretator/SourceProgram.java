@@ -1,25 +1,31 @@
 package com.example.bootIML.interpretator;
 
 import com.example.bootIML.service.ExecuterService;
-import com.example.bootIML.service.GraphicsService;
-import com.example.bootIML.service.ImlParamServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 
 @Getter
 @Setter
 public class SourceProgram {
 
     public ExecuterService executerService;
-    public ArrayList<String> restArg;
-    public ArrayList<Ident> TID;
-    public byte[] fileContent;
-    public ArrayList resultList;
+    public ArrayList<String> restArg = new ArrayList<>();
+    public ArrayList<Ident> TID = new ArrayList<>();
+    public ArrayList resultList = new ArrayList();
     public String resultText = "";
     private char[] sourceText;
     private int currentPos = 0;
+    public byte[] fileContent;
+    int currentLexVal;
+    Lex currentLex;
+    TypeOfLex currentLexType;
+    Deque<Integer> stackInteger = new ArrayDeque<>();
+    Deque<TypeOfLex> stackTypeOfLex = new ArrayDeque<>();
+    public ArrayList<Lex> poliz = new ArrayList<>();
 
     public SourceProgram (char[]  sourceText, ExecuterService executerService) {
         this.sourceText = sourceText;

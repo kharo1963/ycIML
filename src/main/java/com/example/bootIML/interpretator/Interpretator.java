@@ -11,6 +11,6 @@ public class Interpretator {
 
     public void interpretation() {
         parser.analyze();
-        executer.Execute(parser.poliz);
+        executer.Execute(parser.sourceProgram.poliz);
     }
 }

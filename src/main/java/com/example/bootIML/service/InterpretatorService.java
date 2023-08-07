@@ -21,12 +21,8 @@ public class InterpretatorService {
     private final ExecuterService executerService;
 
     public SourceProgram invokeInterpretator (String sourceText){
-        SourceProgram sourceProgram;
         log.info("Start invokeInterpretator");
-        sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
-        sourceProgram.TID = new ArrayList<>();
-        sourceProgram.restArg = new ArrayList<>();
-        sourceProgram.resultList = new ArrayList();
+        SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
         Interpretator interpretator = new Interpretator(sourceProgram);
         interpretator.interpretation();
         for (Object line : sourceProgram.resultList) {
