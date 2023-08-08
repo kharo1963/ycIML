@@ -86,6 +86,7 @@ public class Parser {
         int pl0, pl1, pl2, pl3;
         int idCnt = 0;
         int previousLexVal;
+        int savedPos;
         TypeOfLex previousLexType;
 
         if (sourceProgram.currentLexType == TypeOfLex.LEX_IF) {
@@ -186,7 +187,7 @@ public class Parser {
             getNextLex();
             while (sourceProgram.currentLexType == TypeOfLex.LEX_ID) {
                 checkId();
-                scan.storePos();
+                savedPos = scan.storePos();
                 previousLexVal = sourceProgram.currentLexVal;
                 previousLexType = sourceProgram.currentLexType;
                 getNextLex();
@@ -201,7 +202,7 @@ public class Parser {
                     ++idCnt;
                     continue;
                 }
-                scan.restorePos();
+                scan.restorePos(savedPos);
                 sourceProgram.currentLexVal = previousLexVal;
                 sourceProgram.currentLexType = previousLexType;
                 break;

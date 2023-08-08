@@ -5,8 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Scanner {
     SourceProgram sourceProgram;
-    char currentChar;
-    int savedPos;
+
     String TW[] = { "", "and", "begin", "bool", "do", "else", "end", "if", "false", "int", "not", "or", "program",
             "read", "then", "true", "var", "while", "write", "get", "spincube"};
     String TD[] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">="};
@@ -46,16 +45,17 @@ public class Scanner {
 		return TypeOfLex.LEX_NULL;
     }
     
-    void storePos() {
-        savedPos = sourceProgram.getCurrentPos();
+    int storePos() {
+        return sourceProgram.getCurrentPos();
     }
     
-    void restorePos() {
+    void restorePos(int savedPos) {
         sourceProgram.setCurrentPos(savedPos);
     }
     
     Lex get_lex() {
         int         d = 1, j;
+        char currentChar;
         String      buf = "";
         StateLex CS = StateLex.H;
         do {
@@ -148,6 +148,7 @@ public class Scanner {
     }
 
     int getRestArg() {
+        char currentChar;
         String buf = "";
          do {
             currentChar = sourceProgram.getNextChar();
