@@ -17,13 +17,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InterpretatorService {
-    private final ExecuterService executerService;
+    private final Interpretator interpretator;
 
     public SourceProgram invokeInterpretator (String sourceText){
         log.info("Start invokeInterpretator");
-        SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
-        Interpretator interpretator = new Interpretator(sourceProgram);
-        interpretator.interpretation();
+        SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray());
+        interpretator.interpretation(sourceProgram);
         for (Object line : sourceProgram.resultList) {
             sourceProgram.resultText += line + System.lineSeparator();
         }

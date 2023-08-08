@@ -6,19 +6,19 @@ import java.util.Deque;
 
 import com.example.bootIML.kafka.KafkaMessage;
 import com.example.bootIML.service.ExecuterService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class Executer {
-    SourceProgram sourceProgram;
-    ExecuterService executerService;
 
-    Executer (SourceProgram sourceProgram) {
-        this.sourceProgram = sourceProgram;
-        this.executerService = sourceProgram.executerService;
-    }
+    private final ExecuterService executerService;
 
-    public void Execute(ArrayList<Lex> poliz) {
+    public void Execute(SourceProgram sourceProgram) {
+        ArrayList<Lex> poliz = sourceProgram.poliz;
         Lex currentPolizLex;
         Deque<Integer> arguments = new ArrayDeque<Integer>();
         int i, j;

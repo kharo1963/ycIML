@@ -1,16 +1,18 @@
 package com.example.bootIML.interpretator;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class Interpretator {
-    Parser parser;
-    Executer executer;
+    private final Parser parser;
+    private final Executer executer;
 
-    public Interpretator(SourceProgram sourceProgram) {
-        parser = new Parser(sourceProgram);
-        executer = new Executer(sourceProgram);
-    }
-
-    public void interpretation() {
-        parser.analyze();
-        executer.Execute(parser.sourceProgram.poliz);
+    public void interpretation(SourceProgram sourceProgram) {
+        parser.analyze(sourceProgram);
+        executer.Execute(sourceProgram);
     }
 }

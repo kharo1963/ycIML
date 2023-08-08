@@ -21,7 +21,7 @@ import java.util.List;
 @SpringBootTest
 @RequiredArgsConstructor
 class BootImlApplicationTests {
-	private final ExecuterService executerService;
+	private final Interpretator interpretator;
 	@Test
 	void contextLoads() {
 		log.info("TEST: contexLoads");
@@ -42,9 +42,8 @@ class BootImlApplicationTests {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray(), executerService);
-		Interpretator interpretator = new Interpretator(sourceProgram);
-		interpretator.interpretation();
+		SourceProgram sourceProgram = new SourceProgram(sourceText.toCharArray());
+		interpretator.interpretation(sourceProgram);
 		sourceProgram.resultList.forEach(s -> System.out.println(s));
 		List<Integer> tstFiles = List.of(5, 3, 1, -1, 2);
 		Assertions.assertArrayEquals(sourceProgram.resultList.toArray(), tstFiles.toArray());

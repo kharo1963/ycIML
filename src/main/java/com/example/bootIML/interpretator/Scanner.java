@@ -1,18 +1,15 @@
 package com.example.bootIML.interpretator;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
 public class Scanner {
-    SourceProgram sourceProgram;
-
     String TW[] = { "", "and", "begin", "bool", "do", "else", "end", "if", "false", "int", "not", "or", "program",
             "read", "then", "true", "var", "while", "write", "get", "spincube"};
     String TD[] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">="};
-
-    Scanner(SourceProgram sourceProgram) {
-        this.sourceProgram = sourceProgram;
-    }
 
     int look(String buf, String [] list) {
         int i = 0;
@@ -24,7 +21,7 @@ public class Scanner {
         return 0;
     }
 
-    int put(String buf) {
+    int put(SourceProgram sourceProgram, String buf) {
         int k = 0;
         for (Ident l : sourceProgram.TID) {
         	if (buf.equals(l.name))
@@ -45,15 +42,15 @@ public class Scanner {
 		return TypeOfLex.LEX_NULL;
     }
     
-    int storePos() {
+    int storePos(SourceProgram sourceProgram) {
         return sourceProgram.getCurrentPos();
     }
     
-    void restorePos(int savedPos) {
+    void restorePos(SourceProgram sourceProgram, int savedPos) {
         sourceProgram.setCurrentPos(savedPos);
     }
     
-    Lex get_lex() {
+    Lex get_lex(SourceProgram sourceProgram) {
         int         d = 1, j;
         char currentChar;
         String      buf = "";
@@ -105,7 +102,7 @@ public class Scanner {
                           return new Lex(GetTypeOfOrd(j), j);
                     }
                     else {
-                        j = put(buf);
+                        j = put(sourceProgram, buf);
                         return new Lex(TypeOfLex.LEX_ID, j);
                     }
                 }
@@ -147,7 +144,7 @@ public class Scanner {
         } while (true);
     }
 
-    int getRestArg() {
+    int getRestArg(SourceProgram sourceProgram) {
         char currentChar;
         String buf = "";
          do {

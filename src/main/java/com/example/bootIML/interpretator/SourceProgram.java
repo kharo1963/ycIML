@@ -12,7 +12,6 @@ import java.util.Deque;
 @Setter
 public class SourceProgram {
 
-    public ExecuterService executerService;
     public ArrayList<String> restArg = new ArrayList<>();
     public ArrayList<Ident> TID = new ArrayList<>();
     public ArrayList resultList = new ArrayList();
@@ -27,9 +26,8 @@ public class SourceProgram {
     Deque<TypeOfLex> stackTypeOfLex = new ArrayDeque<>();
     public ArrayList<Lex> poliz = new ArrayList<>();
 
-    public SourceProgram (char[]  sourceText, ExecuterService executerService) {
+    public SourceProgram (char[]  sourceText) {
         this.sourceText = sourceText;
-        this.executerService = executerService;
     }
 
     char getNextChar() {
